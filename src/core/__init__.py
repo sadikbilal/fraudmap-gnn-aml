@@ -1,0 +1,5 @@
+"""FraudMap Core - Shared configuration, logging, and utilities."""
+
+from src.core.config import settings
+
+__all__ = ["settings"]

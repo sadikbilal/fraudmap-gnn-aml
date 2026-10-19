@@ -1,0 +1,56 @@
+# FraudMap Model Hyperparameters
+# ================================
+# These values are from the project report and can be tuned.
+
+model:
+  # Architecture
+  in_channels: 166              # Elliptic: 166 features; Custom: 24
+  hidden_channels: 256
+  sage_layers: 3
+  gat_heads: 8
+  dropout: 0.3
+
+  # GraphSAGE neighbor sampling per layer
+  neighbor_sample_sizes: [25, 10, 5]
+
+training:
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  max_epochs: 200
+  early_stopping_patience: 20
+  batch_size: 512
+  pos_weight: 10.0              # Weight for fraud class (adjust by dataset)
+
+  # Optimizer
+  optimizer: adam
+  scheduler: reduce_on_plateau
+  scheduler_factor: 0.5
+  scheduler_patience: 10
+
+evaluation:
+  fraud_threshold: 0.85         # Score above this → generate alert
+  metrics:
+    - precision
+    - recall
+    - f1_score
+    - roc_auc
+
+data:
+  elliptic:
+    num_nodes: 203769
+    num_edges: 234355
+    feature_dim: 166
+    num_time_steps: 49
+    fraud_ratio: 0.02
+
+  amlsim:
+    num_legit: 100000
+    num_fraud: 2000
+    feature_dim: 24
+    scenarios:
+      - smurfing
+      - layering
+      - structuring
+      - round_trip
+      - scatter_gather
+      - mutualistic
